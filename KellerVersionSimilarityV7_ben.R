@@ -29,7 +29,7 @@ time.start <- Sys.time()
 start.timestamp <- format(time.start, "%Y%m%d_%H%M%S")
 
 # n of iterations to run
-n = 10000
+n = 1000000
 
 # descriptor filename on this system
 filename.descriptors <- 'odorDescriptorsFewer.csv'
@@ -48,29 +48,37 @@ message(paste('started run with',n,'iterations at',start.timestamp))
 
 ####### meaty stuff below #########
 
+nrow.descriptions <- nrow(odorDesc.22)
+
+
 .Random.seed
 # Adjust the number of pairs of combinations below
 mySample <- matrix(nrow=n,ncol=20)
 mixtureDistances <- vector(length=n)
+
+
 for (i in 1:n){
   #make two mixtures of nonoverlapping components
-  mySample[i,] <- sample(1:nrow(odorDesc.22),20,replace=FALSE)
+  mySample[i,] <- sample(1:nrow.descriptions,20,replace=FALSE)
   tempMix1<-colSums(odorDesc.22[mySample[i,1:10],])
   tempMix2<-colSums(odorDesc.22[mySample[i,11:20],])
+  
+  temp.angleDist <- angleDist(tempMix1,tempMix2)
+  
   #store angledistance
-  mixtureDistances[i] <- angleDist(tempMix1,tempMix2)
+  mixtureDistances[i] <- temp.angleDist
   
   #only print results for extreme mixtureDistances
-  if(angleDist(tempMix1,tempMix2) < 0.025)
+  if(temp.angleDist < 0.025)
   {
-    print(angleDist(tempMix1,tempMix2))
+    print(temp.angleDist)
     print(mySample[i,1:10])
     print(tempMix1)
     print(mySample[i,11:20])
     print (tempMix2)
   }
   
-  if(angleDist(tempMix1,tempMix2) > 0.74)
+  if(temp.angleDist > 0.74)
   {
     print(angleDist(tempMix1,tempMix2))
     print(mySample[i,])
