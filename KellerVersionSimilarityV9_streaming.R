@@ -59,10 +59,14 @@ set.seed(1)
 
 mixtureDistances <- data.table('mixtureDistances' = rep(0,n*1000000+1))
 
-
+### two loops - the outer loop for each block of a million
 for (i in 1:n)
 {
   message(paste(i,'million odors started at',Sys.time()))
+  
+  ### and the inner loop which actually does the million odors
+  
+
   for(j in 1:1000000)
   {
     #make two mixtures of nonoverlapping components
@@ -77,7 +81,7 @@ for (i in 1:n)
     mixtureDistances[i*n+j] <- temp.angleDist
     
     #only print results for extreme mixtureDistances
-    if(temp.angleDist < 0.025 | temp.angleDist > 0.64)
+    if(temp.angleDist < 0.025 | temp.angleDist > 0.74)
     {
       message(paste('got one! with angular distance of',temp.angleDist))
       print(temp.angleDist)

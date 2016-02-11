@@ -2,3 +2,4 @@
 .Rhistory
 .RData
 results/
+.ipynb_checkpoints/
