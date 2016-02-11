@@ -51,7 +51,9 @@ message(paste('started run with',n,'iterations at',start.timestamp))
 
 nrow.descriptions <- nrow(odorDesc.22)
 
+set.seed(1)
 .Random.seed
+
 # Adjust the number of pairs of combinations below
 mySample <- matrix(nrow=n,ncol=20)
 mixtureDistances <- vector(length=n)
