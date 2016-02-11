@@ -23,13 +23,13 @@ angleDist<- function(a,b){
 }
 
 #read the Dragon descriptors from the file
-odorDesc.21<-read.csv("/Users/kellera/Desktop/RSimilarity/OdorDescriptorsFewer.csv")
+odorDesc.21<-read.csv("odorDescriptorsFewer.csv")
 odorDesc.22<-odorDesc.21[,c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)]
 
 
 .Random.seed
 # Adjust the number of pairs of combinations below
-  n=10000000
+  n=10000
   mySample <- matrix(nrow=n,ncol=20)
   mixtureDistances <- vector(length=n)
   for (i in 1:n){

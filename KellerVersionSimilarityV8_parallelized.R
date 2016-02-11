@@ -29,17 +29,18 @@ time.start <- Sys.time()
 start.timestamp <- format(time.start, "%Y%m%d_%H%M%S")
 
 # n of iterations to run
-n = 1000000
+n = 1000
 
 # descriptor filename on this system
 filename.descriptors <- 'odorDescriptorsFewer.csv'
 
 # Start writing to an output file
-sink(paste('results/',start.timestamp, "_extreme_mixtures.txt", sep=""))
+output.fname = paste('results/',start.timestamp, "_extreme_mixtures.txt", sep="")
+sink(output.fname)
 
 #read the Dragon descriptors from the file
-odorDesc.21<-read.csv(filename.descriptors)
-odorDesc.22<-odorDesc.21[,c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)]
+odorDesc.22<-read.csv(filename.descriptors)
+odorDesc.22<-odorDesc.22[,c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)]
 
 ####### end of initialization #######
 
@@ -50,16 +51,17 @@ message(paste('started run with',n,'iterations at',start.timestamp))
 
 nrow.descriptions <- nrow(odorDesc.22)
 
-
 .Random.seed
 # Adjust the number of pairs of combinations below
 mySample <- matrix(nrow=n,ncol=20)
 mixtureDistances <- vector(length=n)
 
 
-for (i in 1:n){
+for (i in 1:n)
+{
   #make two mixtures of nonoverlapping components
   mySample[i,] <- sample(1:nrow.descriptions,20,replace=FALSE)
+ 
   tempMix1<-colSums(odorDesc.22[mySample[i,1:10],])
   tempMix2<-colSums(odorDesc.22[mySample[i,11:20],])
   
@@ -96,3 +98,4 @@ ggsave(paste('results/',start.timestamp, ".pdf", sep=""),hist_finish)
 time.end <- Sys.time()
 end.timestamp <- format(time.end, "%Y%m%d_%H%M%S")
 message(paste('ended run with',n,'iterations at',end.timestamp))
+sink()
