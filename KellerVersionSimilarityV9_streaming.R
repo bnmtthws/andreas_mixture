@@ -81,7 +81,7 @@ for (i in 1:n)
     mixtureDistances[i*n+j] <- temp.angleDist
     
     #only print results for extreme mixtureDistances
-    if(temp.angleDist < 0.025 | temp.angleDist > 0.74)
+    if(temp.angleDist < 0.025 | temp.angleDist > 0.72)
     {
       message(paste('got one! with angular distance of',temp.angleDist))
       print(temp.angleDist)
