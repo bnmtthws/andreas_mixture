@@ -1,6 +1,4 @@
 require(ggplot2)
-require(tictoc)
-
 
 ##### functions ########
 #Calculate the dot product of two vectors
@@ -31,7 +29,7 @@ time.start <- Sys.time()
 start.timestamp <- format(time.start, "%Y%m%d_%H%M%S")
 
 # n of iterations to run
-n = 100000
+n = 10000
 
 # descriptor filename on this system
 filename.descriptors <- 'odorDescriptorsFewer.csv'
@@ -52,33 +50,33 @@ message(paste('started run with',n,'iterations at',start.timestamp))
 
 .Random.seed
 # Adjust the number of pairs of combinations below
-  mySample <- matrix(nrow=n,ncol=20)
-  mixtureDistances <- vector(length=n)
-  for (i in 1:n){
-#make two mixtures of nonoverlapping components
+mySample <- matrix(nrow=n,ncol=20)
+mixtureDistances <- vector(length=n)
+for (i in 1:n){
+  #make two mixtures of nonoverlapping components
   mySample[i,] <- sample(1:nrow(odorDesc.22),20,replace=FALSE)
   tempMix1<-colSums(odorDesc.22[mySample[i,1:10],])
   tempMix2<-colSums(odorDesc.22[mySample[i,11:20],])
-#store angledistance
+  #store angledistance
   mixtureDistances[i] <- angleDist(tempMix1,tempMix2)
-                    
-#only print results for extreme mixtureDistances
+  
+  #only print results for extreme mixtureDistances
   if(angleDist(tempMix1,tempMix2) < 0.025)
-{
-  print(angleDist(tempMix1,tempMix2))
-  print(mySample[i,1:10])
-  print(tempMix1)
-  print(mySample[i,11:20])
-  print (tempMix2)
-}
-
-if(angleDist(tempMix1,tempMix2) > 0.74)
-{
-  print(angleDist(tempMix1,tempMix2))
-  print(mySample[i,])
-  print(tempMix1)
-  print (tempMix2)
-}
+  {
+    print(angleDist(tempMix1,tempMix2))
+    print(mySample[i,1:10])
+    print(tempMix1)
+    print(mySample[i,11:20])
+    print (tempMix2)
+  }
+  
+  if(angleDist(tempMix1,tempMix2) > 0.74)
+  {
+    print(angleDist(tempMix1,tempMix2))
+    print(mySample[i,])
+    print(tempMix1)
+    print (tempMix2)
+  }
 }
 
 # make the histogram
