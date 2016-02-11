@@ -1,15 +1,8 @@
 require(ggplot2)
-
-# timestamp of the run
-timestamp <- format(Sys.time(), "%Y%m%d_%H%M%S")
-
-# n of iterations to run
-n = 100000
-
-# Start writing to an output file
-sink(paste (timestamp, "_extreme_mixtures.txt", sep=""))
+require(tictoc)
 
 
+##### functions ########
 #Calculate the dot product of two vectors
 dot <- function(a,b){
   x<-sum(a*b)
@@ -27,11 +20,35 @@ angleDist<- function(a,b){
   x<-acos(dot(a,b)/(norm(a)*norm(b)))
   return(x)
 }
+####### end functions ########
+
+
+####### initialize things #######
+
+
+# timestamp of the run
+time.start <- Sys.time()
+start.timestamp <- format(time.start, "%Y%m%d_%H%M%S")
+
+# n of iterations to run
+n = 100000
+
+# descriptor filename on this system
+filename.descriptors <- 'odorDescriptorsFewer.csv'
+
+# Start writing to an output file
+sink(paste('results/',start.timestamp, "_extreme_mixtures.txt", sep=""))
 
 #read the Dragon descriptors from the file
-odorDesc.21<-read.csv("/scratch/andreas/odorDescriptorsFewer.csv")
+odorDesc.21<-read.csv(filename.descriptors)
 odorDesc.22<-odorDesc.21[,c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)]
 
+####### end of initialization #######
+
+# let's go!
+message(paste('started run with',n,'iterations at',start.timestamp))
+
+####### meaty stuff below #########
 
 .Random.seed
 # Adjust the number of pairs of combinations below
@@ -64,7 +81,12 @@ if(angleDist(tempMix1,tempMix2) > 0.74)
 }
 }
 
-#make the histogram
+# make the histogram
 mD.df <- data.frame(mixtureDistances)
 hist_finish <-  ggplot(data=mD.df,aes(mixtureDistances))+geom_histogram(binwidth=0.01)+xlab("Angle distance (radians)")+ggtitle(paste(n, "random pairs of 10-component non-overlapping mixtures",sep=" "))
-ggsave(paste (timestamp, ".pdf", sep=""),hist_finish)
+ggsave(paste('results/',start.timestamp, ".pdf", sep=""),hist_finish)
+
+# finish up
+time.end <- Sys.time()
+end.timestamp <- format(time.end, "%Y%m%d_%H%M%S")
+message(paste('ended run with',n,'iterations at',end.timestamp))
