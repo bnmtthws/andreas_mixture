@@ -29,7 +29,7 @@ time.start <- Sys.time()
 start.timestamp <- format(time.start, "%Y%m%d_%H%M%S")
 
 # n of iterations to run
-n = 1000
+n = 100000000
 
 # descriptor filename on this system
 filename.descriptors <- 'odorDescriptorsFewer.csv'
