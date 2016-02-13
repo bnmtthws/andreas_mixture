@@ -1,5 +1,11 @@
 require(ggplot2)
 require(data.table)
+require(plyr)
+require(doMC)
+
+
+### initialize parallel multi-core engine
+registerDoMC(4)
 
 ##### functions ########
 #Calculate the dot product of two vectors
@@ -61,7 +67,13 @@ set.seed(1)
 
 # Adjust the number of pairs of combinations below - pre-allocate distance data table
 
-n = 1000000
+n = 10000
 
+
+### not parallel
 mySample <- matrix(nrow=n,ncol=21)
-mySample <- apply(mySample, 1, mix_and_calc)
+system.time(mySample <- apply(mySample, 1, mix_and_calc)) -> time.single
+
+### parallel
+mySample <- matrix(nrow=n,ncol=21)
+mySample <- aaply(mySample, 1, mix_and_calc, .parallel=TRUE) -> time.parallel
