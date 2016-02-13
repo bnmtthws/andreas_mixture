@@ -67,7 +67,7 @@ set.seed(1)
 
 # Adjust the number of pairs of combinations below - pre-allocate distance data table
 
-n = 10000
+n = 100000
 
 
 ### not parallel
@@ -76,4 +76,4 @@ system.time(mySample <- apply(mySample, 1, mix_and_calc)) -> time.single
 
 ### parallel
 mySample <- matrix(nrow=n,ncol=21)
-mySample <- aaply(mySample, 1, mix_and_calc, .parallel=TRUE) -> time.parallel
+system.time(mySample <- aaply(mySample, 1, mix_and_calc, .parallel=TRUE)) -> time.parallel
